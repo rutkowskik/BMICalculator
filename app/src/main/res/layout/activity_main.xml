@@ -14,6 +14,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="52dp"
         android:text="Height"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Weight"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@id/tvHeight"
         app:layout_constraintTop_toBottomOf="@+id/tvHeight" />
 
@@ -32,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Gender"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@id/tvHeight"
         app:layout_constraintTop_toBottomOf="@+id/tvWeight" />
 
@@ -40,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@id/tvHeight"
         app:layout_constraintTop_toBottomOf="@+id/tvGender"
         tools:text="22" />
@@ -50,6 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="BMI"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@id/tvHeight"
         app:layout_constraintTop_toBottomOf="@+id/tvAge" />
 
@@ -61,7 +66,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:ems="8"
-        android:hint="2.00m"
+        android:hint="200cm"
         android:inputType="numberDecimal"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/tvHeight"
@@ -97,6 +102,31 @@
         app:layout_constraintStart_toStartOf="@+id/seekBarAge"
         app:layout_constraintTop_toTopOf="@+id/tvBMI"
         tools:text="22" />
+
+    <TextView
+        android:id="@+id/tvFooter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="© 2023 by Kacper Rutkowksi "
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvBMIDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/seekBarAge"
+        app:layout_constraintStart_toStartOf="@+id/seekBarAge"
+        app:layout_constraintTop_toBottomOf="@+id/seekBarAge"
+        tools:text="Good weight" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

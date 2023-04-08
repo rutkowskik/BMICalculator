@@ -1,5 +1,7 @@
 package pl.krutkowski
 
+import android.animation.ArgbEvaluator
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -8,6 +10,7 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 
 private const val TAG = "MainActivity"
 private const val INITIAL_AGE_VALUE = 25
@@ -18,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var seekBarAge: SeekBar
     private lateinit var tvBMIScore: TextView
     private lateinit var tvAge: TextView
+    private lateinit var tvBMIDescription: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         etHeight = findViewById(R.id.etHeight)
         tvBMIScore = findViewById(R.id.tvBMIScore)
         tvAge = findViewById(R.id.tvAge)
+        tvBMIDescription = findViewById(R.id.tvBMIDescription)
 
         //defoult values in the app
         seekBarAge.progress = INITIAL_AGE_VALUE
@@ -73,17 +78,38 @@ class MainActivity : AppCompatActivity() {
     }
     private fun computeBMI() {
         // Get the value of height and weight
-        val weight: String? = etWeight.text.toString()
-        val height: String? = etHeight.text.toString()
-        val age = seekBarAge.progress
-        //compute the BMI
-        if(weight != null && weight.isNotEmpty() && height != null && height.isNotEmpty()){
-            val weightDouble = weight.toDouble()
-            val heightDouble = height.toDouble()
-            //TODO check if not eqals 0
-            val bmi = weightDouble/(heightDouble*heightDouble)
-        //Update the UI
-            tvBMIScore.text = bmi.toString()
+        if(etWeight.text.isEmpty() || etHeight.text.isEmpty()){
+            return
         }
+        //compute the BMI
+
+         val weight = etWeight.text.toString().toDouble()
+         val height = etHeight.text.toString().toDouble()
+
+        val bmi = (weight/(height*height))*10000
+       //Update the UI
+        tvBMIScore.text = "%.2f".format(bmi)
+        updateBMIScoreDescription(bmi.toInt())
+    }
+
+    private fun updateBMIScoreDescription(bmi: Int) {
+        val description = when (bmi) {
+            in 10..18 -> "UNDERWEIGHT"
+            in 19..24 -> "NORMAL"
+            in 25..30 -> "OVERWEIGHT"
+            in 30..34 -> "OBESE"
+            in 35..50 -> "EXTREMELY OBESE"
+            else -> "OUT OF RANGE"
+        }
+        tvBMIDescription.text = description
+
+        //set green color if bmi is NORMAL
+        if(description == "NORMAL"){
+            tvBMIDescription.setTextColor(ContextCompat
+                .getColor(applicationContext,  R.color.green))
+        }else {
+            tvBMIDescription.setTextColor(Color.RED)
+        }
+
     }
 }
