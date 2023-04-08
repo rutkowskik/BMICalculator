@@ -111,5 +111,19 @@ class MainActivity : AppCompatActivity() {
             tvBMIDescription.setTextColor(Color.RED)
         }
 
+        /* 1. TODO Fajnie jak były podany zakres, albo ile trzeba zrzucic zeby miec zielone
+        2. gender to trzeba jeszcze zeby sie dało wybrac
+        3. do jakiej wagi cgcesz schudnąć i oblicza zapotrzebowanie albo zamiast teog żeby zawsze do zielonegp d
+        doprowadzało
+        4. podaje aktywoścj dzienna jaką trzeba robic
+        5. KONTROLA WAGI NP. WYSKAKUJE POWIDAOMNIE ZEB SIE ZWAŻYĆ`
+
+        dodac kolejna strone a tam wiecej info.
+                 wskazni taki suwak, który pokazuje jak wyglladaz na skali innycg
+                 moze pokazc ile kilogramow nie przytyc zeby bylo*
+
+                 TODO chat GBT to sprawdzenia/
+         */
+
     }
 }
