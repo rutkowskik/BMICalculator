@@ -1,17 +1,24 @@
 package pl.krutkowski
 
-import android.animation.ArgbEvaluator
 import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
+import android.text.Spanned
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 private const val TAG = "MainActivity"
 private const val INITIAL_AGE_VALUE = 25
+private const val SEEK_BAR_MIN_AGE = 13
+private const val SEEK_BAR_MAX_AGE = 99
 class MainActivity : AppCompatActivity() {
 
     private lateinit var etWeight: EditText
@@ -25,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var maleRadioButton: RadioButton
     private lateinit var genderRadioGroup: RadioGroup
 
-
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,14 +47,44 @@ class MainActivity : AppCompatActivity() {
         tvGenderTest = findViewById(R.id.tvGenderWindow)
         genderRadioGroup = findViewById(R.id.gender_radio_group)
 
+        //seek bar values
+        seekBarAge.min = SEEK_BAR_MIN_AGE
+        seekBarAge.max = SEEK_BAR_MAX_AGE
+
+        //additional function to set DecimalPaces
+        class DecimalDigitsInputFilter( maxDecimalPlaces: Int) : InputFilter {
+            private val pattern: Pattern = Pattern.compile(
+                "[0-9]"  + "+((\\.[0-9]{0,"
+                        + (maxDecimalPlaces - 1) + "})?)||(\\.)?"
+            )
+            override fun filter(
+                p0: CharSequence?, p1: Int, p2: Int, p3: Spanned?, p4: Int, p5: Int
+            ): CharSequence? {
+                p3?.apply {
+                    val matcher: Matcher = pattern.matcher(p3)
+                    return if (!matcher.matches()) "" else null
+                }
+                return null
+            }
+        }
+        //filters on tvWeight
+        val maxLength = 5 // max input number
+        val inputFilters = arrayOf<InputFilter>(
+            InputFilter.LengthFilter(maxLength),
+            DecimalDigitsInputFilter(1)
+        )
+        etWeight.filters = inputFilters
+
         //defoult values in the app
         seekBarAge.progress = INITIAL_AGE_VALUE
-        tvAge.text = "$INITIAL_AGE_VALUE lat"
+        tvAge.text = "Age: $INITIAL_AGE_VALUE"
+
         //dynamic set age value
         seekBarAge.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 Log.i(TAG, "OnProgressChanged $p1")
-                tvAge.text = "$p1 lat"
+                tvAge.text = "Age: $p1"
+                computeBMI()
 
             }
 
@@ -92,7 +129,6 @@ class MainActivity : AppCompatActivity() {
                     tvGenderTest.text = "MALE"
                 }
             }
-
         }
 
     }
@@ -109,41 +145,55 @@ class MainActivity : AppCompatActivity() {
         val bmi = (weight/(height*height))*10000
        //Update the UI
         tvBMIScore.text = "%.2f".format(bmi)
-        updateBMIScoreDescription(bmi.toInt())
+        updateBMIScoreDescription(bmi)
     }
 
-    private fun updateBMIScoreDescription(bmi: Int) {
-        val description = when (bmi) {
-            in 10..18 -> "UNDERWEIGHT"
-            in 19..24 -> "NORMAL"
-            in 25..30 -> "OVERWEIGHT"
-            in 30..34 -> "OBESE"
-            in 35..50 -> "EXTREMELY OBESE"
-            else -> "OUT OF RANGE"
+    private fun updateBMIScoreDescription(bmi : Double) {
+
+        //get age
+        val currentAgeVale = seekBarAge.progress
+        var description = ""
+        if (currentAgeVale <= 65){
+            description = when {
+                bmi > 10.0 && bmi < 18.5 -> "UNDERWEIGHT"
+                bmi >= 18.5 && bmi < 25 -> "NORMAL"
+                bmi >= 25 && bmi < 30 -> "OVERWEIGHT"
+                bmi >= 30 && bmi < 35 -> "OBESE"
+                bmi >= 35 && bmi < 60 -> "EXTREMELY OBESE"
+
+                else -> "OUT OF RANGE"
+            }
+        }else {
+            description = when {
+                bmi > 10.0 && bmi < 23 -> "UNDERWEIGHT"
+                bmi >= 23 && bmi < 28 -> "NORMAL"
+                bmi >= 28 && bmi < 30 -> "OVERWEIGHT"
+                bmi >= 30 && bmi < 35 -> "OBESE"
+                bmi >= 35 && bmi < 60 -> "EXTREMELY OBESE"
+
+                else -> "OUT OF RANGE"
+            }
         }
         tvBMIDescription.text = description
 
         //set green color if bmi is NORMAL
-        if(description == "NORMAL"){
-            tvBMIDescription.setTextColor(ContextCompat
-                .getColor(applicationContext,  R.color.green))
-        }else {
+        if (description == "NORMAL") {
+            tvBMIDescription.setTextColor(
+                ContextCompat
+                    .getColor(applicationContext, R.color.green)
+            )
+        } else {
             tvBMIDescription.setTextColor(Color.RED)
         }
-
-        /* 1. TODO Fajnie jak były podany zakres, albo ile trzeba zrzucic zeby miec zielone
-        2. gender to trzeba jeszcze zeby sie dało wybrac
-        3. do jakiej wagi cgcesz schudnąć i oblicza zapotrzebowanie albo zamiast teog żeby zawsze do zielonegp d
-        doprowadzało
-        4. podaje aktywoścj dzienna jaką trzeba robic
-        5. KONTROLA WAGI NP. WYSKAKUJE POWIDAOMNIE ZEB SIE ZWAŻYĆ`
-
-        dodac kolejna strone a tam wiecej info.
-                 wskazni taki suwak, który pokazuje jak wyglladaz na skali innycg
-                 moze pokazc ile kilogramow nie przytyc zeby bylo*
-
-                 TODO chat GBT to sprawdzenia/
-         */
-
     }
+
+    //TODO Features
+    //     1.Ile należy zrzucić kilogramów aby być w odpowiedniej wadze!!!
+    //     2.Do jakiej wagi chesz schudnąć i oblicza zapotrzebowanie albo zamiast tego żeby zawsze do zielonegp doprowadzało
+    //     3.Podaje aktywoścj dzienna jaką trzeba robic
+    //     5.KONTROLA WAGI NP. WYSKAKUJE POWIDAOMNIE ZEB SIE ZWAŻYĆ
+    //     6.dodac kolejna strone a tam wiecej info.
+    //     7.Wskazni taki suwak, który pokazuje jak wyglladaz na skali innycg moze pokazc ile kilogramow nie przytyc zeby bylo ok
+
+
 }
