@@ -7,9 +7,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.widget.EditText
-import android.widget.SeekBar
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 
 private const val TAG = "MainActivity"
@@ -21,7 +19,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var seekBarAge: SeekBar
     private lateinit var tvBMIScore: TextView
     private lateinit var tvAge: TextView
+    private lateinit var tvGenderTest: TextView
     private lateinit var tvBMIDescription: TextView
+    private lateinit var femaleRadioButton: RadioButton
+    private lateinit var maleRadioButton: RadioButton
+    private lateinit var genderRadioGroup: RadioGroup
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +35,10 @@ class MainActivity : AppCompatActivity() {
         tvBMIScore = findViewById(R.id.tvBMIScore)
         tvAge = findViewById(R.id.tvAge)
         tvBMIDescription = findViewById(R.id.tvBMIDescription)
+        femaleRadioButton  = findViewById(R.id.radioButtonFemale)
+        maleRadioButton = findViewById(R.id.radioButtonMale)
+        tvGenderTest = findViewById(R.id.tvGenderWindow)
+        genderRadioGroup = findViewById(R.id.gender_radio_group)
 
         //defoult values in the app
         seekBarAge.progress = INITIAL_AGE_VALUE
@@ -74,6 +81,19 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
+
+        genderRadioGroup.setOnCheckedChangeListener{ group, checkedId ->
+            when (checkedId){
+                R.id.radioButtonFemale -> {
+                    tvGenderTest.text = "FEMALE"
+                }
+                R.id.radioButtonMale -> {
+                    tvGenderTest.text = "MALE"
+                }
+            }
+
+        }
 
     }
     private fun computeBMI() {
