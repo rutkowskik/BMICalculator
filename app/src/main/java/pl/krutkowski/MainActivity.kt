@@ -1,5 +1,6 @@
 package pl.krutkowski
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import android.text.InputFilter
 import android.text.Spanned
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -44,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         tvBMIDescription = findViewById(R.id.tvBMIDescription)
         femaleRadioButton  = findViewById(R.id.radioButtonFemale)
         maleRadioButton = findViewById(R.id.radioButtonMale)
-        tvGenderTest = findViewById(R.id.tvGenderWindow)
+//        tvGenderTest = findViewById(R.id.tvGenderWindow)
         genderRadioGroup = findViewById(R.id.gender_radio_group)
 
         //seek bar values
@@ -118,18 +120,17 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-
-
-        genderRadioGroup.setOnCheckedChangeListener{ group, checkedId ->
-            when (checkedId){
-                R.id.radioButtonFemale -> {
-                    tvGenderTest.text = "FEMALE"
-                }
-                R.id.radioButtonMale -> {
-                    tvGenderTest.text = "MALE"
-                }
-            }
-        }
+        //gender terminally off
+//        genderRadioGroup.setOnCheckedChangeListener{ group, checkedId ->
+//            when (checkedId){
+//                R.id.radioButtonFemale -> {
+//                    tvGenderTest.text = "FEMALE"
+//                }
+//                R.id.radioButtonMale -> {
+//                    tvGenderTest.text = "MALE"
+//                }
+//            }
+//        }
 
     }
     private fun computeBMI() {
@@ -185,6 +186,12 @@ class MainActivity : AppCompatActivity() {
         } else {
             tvBMIDescription.setTextColor(Color.RED)
         }
+    }
+
+    fun goToCalorieCounterPage (view: View){
+        val intent = Intent(this, CalorieCounter::class.java)
+        startActivity(intent)
+
     }
 
     //TODO Features

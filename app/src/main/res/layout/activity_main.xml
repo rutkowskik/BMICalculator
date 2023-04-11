@@ -68,8 +68,8 @@
         android:ems="8"
         android:hint="200cm"
         android:inputType="numberDecimal"
-        android:textSize="24sp"
         android:maxLength="3"
+        android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/tvHeight"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -80,8 +80,8 @@
         android:ems="8"
         android:hint="100kg"
         android:inputType="numberDecimal"
-        android:textSize="24sp"
         android:maxLength="5"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvWeight"
         app:layout_constraintStart_toStartOf="@+id/etHeight"
         app:layout_constraintTop_toTopOf="@+id/tvWeight" />
@@ -155,17 +155,29 @@
 
     </RadioGroup>
 
-    <TextView
-        android:id="@+id/tvGenderWindow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvBMIDescription"
-        tools:text="Test" />
+    <Button
+        android:id="@+id/buttonCalorieCounter"
+        android:layout_width="178dp"
+        android:layout_height="86dp"
+        android:layout_marginTop="32dp"
+        android:onClick="goToCalorieCounterPage"
+        android:text="Press to count your calories"
+        app:layout_constraintEnd_toEndOf="@+id/tvBMIDescription"
+        app:layout_constraintStart_toStartOf="@+id/tvBMIDescription"
+        app:layout_constraintTop_toBottomOf="@+id/tvBMIDescription" />
+
+    <!--    gender print test terminally off-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/tvGenderWindow"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="65dp"-->
+    <!--        android:textSize="24sp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.5"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tvBMIDescription"-->
+    <!--        tools:text="Test" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
